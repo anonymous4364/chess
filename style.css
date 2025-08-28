@@ -1,0 +1,159 @@
+:root {
+  /* Board square colors */
+  --light-square: hsl(37, 66%, 85%);
+  --dark-square: hsl(27, 36%, 55%);
+
+  /* Highlights */
+  --moved-to: hsl(56, 34%, 53%);
+  --selected: hsl(57, 34%, 46%);
+
+  /* Move indicators */
+  --valid-move: hsla(88, 62%, 27%, 0.8);
+  --capture-move: red;
+
+  /* Hover overlays */
+  --hover-light: hsla(57, 34%, 70%, 0.5);
+  --hover-dark: hsla(57, 34%, 40%, 0.5);
+
+  /* UI */
+  --ui-bg: #333;
+  --ui-fg: #fff;
+  --ui-border: #000;
+
+  /* Background gradient */
+  --main-bg: linear-gradient(
+    360deg,
+    hsl(37, 10%, 8%) 0%,
+    hsl(37, 10%, 15%) 100%
+  );
+}
+
+body{
+    margin: 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: linear-gradient(360deg, hsl(37, 10%, 8%) 0%, hsl(37, 10%, 15%) 100%);
+    min-height: 100vh;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 480px;
+    height: 480px;
+    cursor: pointer;
+}
+
+.square {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.square img{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.light {
+    background-color: var(--light-square);
+}
+
+.dark {
+    background-color: var(--dark-square);
+}
+
+.selected{
+    background-color: var(--selected);
+}
+
+.moved-to{
+    background-color: var(--moved-to);
+}
+
+.square.valid-move::after {
+    content: "";
+    background-color: var(--valid-move);
+    width: 20%;
+    height: 20%;
+    transition: all 0.07s ease;
+    position: absolute;
+}
+
+.square.capture::after {
+    content: "";
+    background-color: var(--capture-move);
+    width: 20%;
+    height: 20%;
+    transition: all 0.07s ease;
+    position: absolute;
+}
+.square.light.valid-move:hover::after {
+    background-color: var(--hover-light);
+    width: 100%;
+    height: 100%;
+}
+
+.square.dark.valid-move:hover::after {
+    background-color: var(--hover-dark);
+    width: 100%;
+    height: 100%;
+}
+
+.square.dark.capture:hover::after {
+    background-color: var(--hover-dark);
+    width: 100%;
+    height: 100%;
+}
+
+.square.light.capture:hover::after {
+    background-color: var(--hover-light);
+    width: 100%;
+    height: 100%;
+}
+
+.img {
+    object-fit: contain;
+    width: 2rem;
+    height: auto;
+}
+
+#flip, #autoFlipLabel, #whiteCaptured, #blackCaptured{
+   font-size: 1rem;
+   background-color: var(--ui-bg);
+   border: solid 2px var(--ui-border);
+   color: var(--ui-fg);
+   padding: 0.5rem;
+   border-radius: 0.5rem;
+   cursor: pointer;
+}
+
+#capturedContainer{
+    display: flex;
+    gap: 1rem;
+}
+
+@media (max-width: 600px) {
+    .board {
+        width: 100%;
+        height: auto;
+    }
+}
+
+
+
+
+
+
+
+
+
+
