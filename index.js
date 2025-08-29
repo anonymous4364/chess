@@ -537,9 +537,13 @@ function highlightValidSquares(fromRow, fromCol) {
                 if (grid[r][c] !== ".") {
                     square.classList.add("capture");
                 } else {
-                    square.classList.add("valid-move");
+                    const enPassant = isValidPawnMove(fromRow, fromCol, r, c);
+                    if (enPassant === "en passant") {
+                        square.classList.add("capture");
+                    } else {
+                        square.classList.add("valid-move");
+                    }
                 }
-
                 highlightedSquares.push(square);
             }
         }
@@ -602,5 +606,5 @@ function cloneBoard(grid) {
     return cloned;
 }
 
-
 main();
+
