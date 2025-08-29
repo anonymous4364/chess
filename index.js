@@ -279,6 +279,7 @@ function move(fromRow, fromCol, toRow, toCol) {
             whiteKingCol = toCol;
         } 
         if (movingPiece === "k") {
+            didBlackKingMove = true;
             blackKingRow = toRow;
             blackKingCol = toCol;
         } 
@@ -600,5 +601,6 @@ function cloneBoard(grid) {
     }
     return cloned;
 }
+
 
 main();
