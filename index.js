@@ -208,24 +208,36 @@ function capture(fromRow, fromCol, toRow, toCol) {
     const pieceIsBlack = piece === piece.toLowerCase();
     const targetIsWhite = target === target.toUpperCase();
     const targetIsBlack = target === target.toLowerCase();
-    
+
+    if (pieceIsWhite && targetIsBlack) {
+        const img = document.createElement("img");
+        img.src = pieceMap[target];
+        img.classList.add("img"); 
+        whiteCapturedPieces.appendChild(img); 
+    }
+    else if (pieceIsBlack && targetIsWhite) {
+        const img = document.createElement("img");
+        img.src = pieceMap[target];
+        img.classList.add("img"); 
+        blackCapturedPieces.appendChild(img);
+    }  
+
+    // stimulate
+    const backUp = cloneBoard(grid);
+    grid[toRow][toCol] = piece;
+    grid[fromRow][fromCol] = ".";
+
     let isWhiteKingInCheck = isSquareAttacked(whiteKingRow, whiteKingCol, false);
     let isBlackKingInCheck = isSquareAttacked(blackKingRow, blackKingCol, true);
 
-    if (!((isWhiteTurn && isWhiteKingInCheck) || (!isWhiteTurn && isBlackKingInCheck))) {
-        if (pieceIsWhite && targetIsBlack) {
-            const img = document.createElement("img");
-            img.src = pieceMap[target];
-            img.classList.add("img"); 
-            whiteCapturedPieces.appendChild(img); 
-            }
-        else if (pieceIsBlack && targetIsWhite) {
-            const img = document.createElement("img");
-            img.src = pieceMap[target];
-            img.classList.add("img"); 
-            blackCapturedPieces.appendChild(img);
-        } 
+    if (isWhiteTurn && isWhiteKingInCheck) {
+        whiteCapturedPieces.removeChild(whiteCapturedPieces.lastChild);
     }
+    else if (!isWhiteTurn && isBlackKingInCheck) {
+        blackCapturedPieces.removeChild(blackCapturedPieces.lastChild);
+    }
+
+    grid = backUp;
 }
 
 function move(fromRow, fromCol, toRow, toCol) {
@@ -393,10 +405,25 @@ function isValidPawnMove(fromRow, fromCol, toRow, toCol) {
             Math.abs(lastMove.toRow - lastMove.fromRow) === 2 && // last piece move direction must be 2
             lastMove.toCol === toCol && // same col
             lastMove.toRow === fromRow //  // it ended next to pawn
-        ) return "en passant";
+        ) {
+            // stimulate 
+            const backUp = cloneBoard(grid);
+            const capturedRow = fromIsWhite ? toRow + 1 : toRow - 1;
+            grid[toRow][toCol] = grid[fromRow][fromCol];
+            grid[fromRow][fromCol] = ".";
+            grid[capturedRow][toCol] = "." // remove captured pawn temporarily
 
-    return false;
-    
+            let isWhiteKingInCheck = isSquareAttacked(whiteKingRow, whiteKingCol, false);
+            let isBlackKingInCheck = isSquareAttacked(blackKingRow, blackKingCol, true);
+
+            grid = backUp; // restore the grid before returning false
+
+            if ((isWhiteTurn && isWhiteKingInCheck) || (!isWhiteTurn && isBlackKingInCheck)) return false;
+        
+            return "en passant";
+        }
+
+    return false; 
 }
 
 function isValidKingMove(fromRow, fromCol, toRow, toCol) {
@@ -612,4 +639,5 @@ function cloneBoard(grid) {
 }
 
 main();
+
 
