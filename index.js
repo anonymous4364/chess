@@ -208,18 +208,23 @@ function capture(fromRow, fromCol, toRow, toCol) {
     const pieceIsBlack = piece === piece.toLowerCase();
     const targetIsWhite = target === target.toUpperCase();
     const targetIsBlack = target === target.toLowerCase();
+    
+    let isWhiteKingInCheck = isSquareAttacked(whiteKingRow, whiteKingCol, false);
+    let isBlackKingInCheck = isSquareAttacked(blackKingRow, blackKingCol, true);
 
-    if (pieceIsWhite && targetIsBlack) {
-        const img = document.createElement("img");
-        img.src = pieceMap[target];
-        img.classList.add("img"); 
-        whiteCapturedPieces.appendChild(img); 
-    }
-    else if (pieceIsBlack && targetIsWhite) {
-        const img = document.createElement("img");
-        img.src = pieceMap[target];
-        img.classList.add("img"); 
-        blackCapturedPieces.appendChild(img);
+    if (!((isWhiteTurn && isWhiteKingInCheck) || (!isWhiteTurn && isBlackKingInCheck))) {
+        if (pieceIsWhite && targetIsBlack) {
+            const img = document.createElement("img");
+            img.src = pieceMap[target];
+            img.classList.add("img"); 
+            whiteCapturedPieces.appendChild(img); 
+            }
+        else if (pieceIsBlack && targetIsWhite) {
+            const img = document.createElement("img");
+            img.src = pieceMap[target];
+            img.classList.add("img"); 
+            blackCapturedPieces.appendChild(img);
+        } 
     }
 }
 
